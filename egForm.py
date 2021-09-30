@@ -21,7 +21,7 @@ def create_simple_form():
                    x=110, y=585, borderStyle='inset',
                    borderColor=black, fillColor=white, 
                    width=300,
-                   textColor=white, forceBorder=True)
+                   textColor=black, forceBorder=True)
 
     c.drawString(15, 560, 'This Employee has not had symptoms of cough, fever,high temperature,')
     c.drawString(15, 550, 'sore throat,runny nose, breathlessness or flu like')
