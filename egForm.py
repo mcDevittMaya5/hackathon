@@ -9,16 +9,9 @@ def create_simple_form():
     c.setFont("Courier", 14)
     form = c.acroForm
     
-    c.drawString(15, 650, 'First Name:')
-    form.textfield(name='fname', tooltip='First Name',
-                   x=110, y=635, borderStyle='inset',
-                   borderColor=black, fillColor=white, 
-                   width=300,
-                   textColor=black, forceBorder=True)
-    
-    c.drawString(15, 600, 'Last Name:')
-    form.textfield(name='lname', tooltip='Last Name',
-                   x=110, y=585, borderStyle='inset',
+    c.drawString(15, 650, 'Employee Name:')
+    form.textfield(name='name', tooltip='Name',
+                   x=150, y=635, borderStyle='inset',
                    borderColor=black, fillColor=white, 
                    width=300,
                    textColor=black, forceBorder=True)

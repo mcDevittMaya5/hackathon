@@ -1,7 +1,29 @@
-#https://akdux.com/python/2020/10/31/python-fill-pdf-files.html#PDF-Setup
 import pdfrw
 import datetime
-import requests
+from flask import Flask
+from flask import request
+import json
+
+
+app = Flask(__name__)
+
+@app.route('/covidrequirements',methods = ['POST'])
+def getCovidRequirements():
+    return{
+        "response": "In order to get the covid Form the following requirements must be met."
+        #TO DO FILL IN REQUIREMENTS
+    }
+
+@app.route('/covidform',methods = ['POST'])
+def getCovidForm():
+    pdfIp = "simpleForm.pdf"
+    pdfOp = "FilledInForm.pdf"
+    requestData = request.get_json()
+    name = requestData['user']
+    temperature = requestData['args']
+    return{
+        fillInFileData(name,temperature,pdfIp,)
+    }
 
 #gets the available fields in pdf
 ANNOT_KEY = '/Annots'
@@ -11,14 +33,7 @@ ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 
-# for page in ipPdf.pages:
-#     annotations = page[ANNOT_KEY]
-#     for annotation in annotations:
-#         if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
-#             if annotation[ANNOT_FIELD_KEY]:
-#                 key = annotation[ANNOT_FIELD_KEY][1:-1]
-#                 print(key)
-               
+#Putting Data Into PDF
 def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
     template_pdf = pdfrw.PdfReader(input_pdf_path)
     for page in template_pdf.pages:
@@ -39,33 +54,13 @@ def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
                             annotation.update(pdfrw.PdfDict(AP=''))
     template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf) 
-                
-def fillInFileData(data, template_input, template_output):
+
+#Getting the data and running fucntion to fill in form
+def fillInFileData(name,temp, template_input, template_output):
     data_dict = {
         
-        'fname': data.get('fname', ''),
-        'lname': data.get('lname', ''),
-        'temp': data.get('temp',''),
-        'date': data.get('date',''),
+        'name': name,
+        'temp': temp,
+        'date': datetime.date.today(),
     }
-    
     return fill_pdf(template_input, template_output, data_dict)      
-
-
-if __name__ == '__main__':
-    
-    #Input and output PDF forms
-    pdfIp = "simpleForm.pdf"
-    pdfOp = "FilledInForm.pdf"
-    
-    #ipPdf = pdfrw.PdfReader(pdfIp)
-    #print(ipPdf)
-    
-    data_dict = {
-    'fname': 'Jane',
-    'lname':'Doe',
-    'temp':'37',
-    'date' : datetime.date.today(),
-    }
-    
-    fillInFileData(data_dict, pdfIp, pdfOp)
