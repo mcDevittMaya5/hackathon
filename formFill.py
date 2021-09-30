@@ -1,8 +1,8 @@
 import pdfrw
 import datetime
-from flask import Flask
-from flask import request
-import json
+from flask import Flask, request, send_from_directory
+
+# import json
 
 
 app = Flask(__name__)
@@ -11,19 +11,24 @@ app = Flask(__name__)
 def getCovidRequirements():
     return{
         "response": "In order to get the covid Form the following requirements must be met."
-        #TO DO FILL IN REQUIREMENTS
+        #TO DO FILL IN REQUIREMENTS in this line and note the 
     }
 
 @app.route('/covidform',methods = ['POST'])
 def getCovidForm():
     pdfIp = "simpleForm.pdf"
-    pdfOp = "FilledInForm.pdf"
     requestData = request.get_json()
     name = requestData['user']
     temperature = requestData['args']
+    pdfOp = '{employeeName}-{date}.pdf'.format(employeeName= name, date = datetime.date.today())
     return{
-        fillInFileData(name,temperature,pdfIp,)
+        fillInFileData(name,temperature,pdfIp,pdfOp)
     }
+
+#saving completed forum
+@app.route('/pdf/<path:path>')
+def send_js(path):
+    return send_from_directory('pdf', path)
 
 #gets the available fields in pdf
 ANNOT_KEY = '/Annots'
