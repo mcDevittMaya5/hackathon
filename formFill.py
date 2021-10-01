@@ -13,29 +13,29 @@ WIDGET_SUBTYPE_KEY = '/Widget'
 app = Flask(__name__)
 pdfIp = "simpleForm.pdf"
 
-@app.route('/covidrequirements',methods = ['POST'])
+@app.route("/covidrequirements",methods = ['POST'])
 def getCovidRequirements():
     return {
-        "response": "test"
+        "response": "In order to get the covid Form the following requirements must be met. The Employee must not have a cough, high temperature, sore throat, runny nose, breathlessness or flu like symptoms in the last 14 days. The employee can not be diagnosed with, or suspected to have Covid-19 in the last 14 days. The Employee should not have been a close contact within the last 14 days. The employee should not have been told by a doctorto self-isolate or cacoon. The Employee should not be waiting for a Covid-19 test. If all these conditions have been met please complete the /covidform command followed by teamperature measurement completed today in degrese celsius."
     }
 
-@app.route('/covidform',methods = ['POST'])
+@app.route("/covidform",methods = ['POST'])
 def getCovidForm():
     requestData = request.get_json()
-    name = requestData['username']
-    temperature = float(requestData['args'])
+    name = requestData["username"]
+    temperature = float(requestData["args"])
     if temperature < 38.00:
-        pdfOp = 'pdf/{employeeName}-{date}.pdf'.format(employeeName= name, date = datetime.date.today())
-        fillInFileData(name,temperature,pdfIp,pdfOp) #change location to right way in this function
+        pdfOp = 'pdf/{employeeName}-{date}.pdf'.format(employeeName= name.replace(" ",""), date = datetime.date.today())
+        fillInFileData(name,temperature,pdfIp,pdfOp)
         return {
-          #from the server
+          "response": "http://localhost:5000/"+pdfOp
        }
     else:
         return {
             "response":'Sorry {employeeName}, you are not eligable to return to the office as you may have a fever. Please contact local GP and follow their advice.'.format(employeeName = name)
         }
 
-@app.route('/pdf/<path:path>')
+@app.route("/pdf/<path:path>")
 def send_js(path):
     return send_from_directory('pdf', path)
 
