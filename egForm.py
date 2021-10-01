@@ -1,6 +1,7 @@
 from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfform
-from reportlab.lib.colors import black,white,blue
+
+from reportlab.lib.colors import black,white
+
 def create_simple_form():
     c = canvas.Canvas('simpleForm.pdf')
     

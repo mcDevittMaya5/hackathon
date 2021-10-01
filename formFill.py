@@ -2,41 +2,49 @@ import pdfrw
 import datetime
 from flask import Flask, request, send_from_directory
 
-# import json
-
-
-app = Flask(__name__)
-
-@app.route('/covidrequirements',methods = ['POST'])
-def getCovidRequirements():
-    return{
-        "response": "In order to get the covid Form the following requirements must be met."
-        #TO DO FILL IN REQUIREMENTS in this line and note the 
-    }
-
-@app.route('/covidform',methods = ['POST'])
-def getCovidForm():
-    pdfIp = "simpleForm.pdf"
-    requestData = request.get_json()
-    name = requestData['user']
-    temperature = requestData['args']
-    pdfOp = '{employeeName}-{date}.pdf'.format(employeeName= name, date = datetime.date.today())
-    return{
-        fillInFileData(name,temperature,pdfIp,pdfOp)
-    }
-
-#saving completed forum
-@app.route('/pdf/<path:path>')
-def send_js(path):
-    return send_from_directory('pdf', path)
-
-#gets the available fields in pdf
 ANNOT_KEY = '/Annots'
 ANNOT_FIELD_KEY = '/T'
 ANNOT_VAL_KEY = '/V'
 ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
+
+
+app = Flask(__name__,static_url_path='')
+pdfIp = "simpleForm.pdf"
+
+@app.route('/covidrequirements',methods = ['POST'])
+def getCovidRequirements():
+    return{
+        "response": """In order to get the covid Form the following requirements must be met. The Employee must not have a cough, high temperature, sore throat, 
+                    runny nose, breathlessness or flu like symptoms in the last 14 days. The employee can not be diagnosed with, or suspected to have Covid-19 in 
+                    the last 14 days. The Employee should not have been a close contact within the last 14 days. The employee should not have been told by a doctor
+                    to self-isolate or cacoon. The Employee should not be waiting for a Covid-19 test. If all these conditions have been met please complete
+                    the /covidform command followed by teamperature measurement completed today in degrese celsius."""
+    }
+
+@app.route('/covidform',methods = ['POST'])
+def getCovidForm():
+    requestData = request.get_json()
+    name = requestData['username']
+    temperature = float(requestData['args'])
+    if temperature < 38.00:
+        pdfOp = 'pdf/{employeeName}-{date}.pdf'.format(employeeName= name, date = datetime.date.today())
+        fillInFileData(name,temperature,pdfIp,pdfOp) #change location to right way in this function
+        return{
+          #from the server
+       }
+    else:
+        return {
+            "response":'Sorry {employeeName}, you are not eligable to return to the office as you may have a fever. Please contact local GP and follow their advice.'.format(employeeName = name)
+        }
+
+@app.route('/pdf/<path:path>')
+def send_js(path):
+    return send_from_directory('pdf', path)
+
+#gets the available fields in pdf
+
 
 #Putting Data Into PDF
 def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
