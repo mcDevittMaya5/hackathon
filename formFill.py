@@ -22,6 +22,7 @@ def getCovidRequirements():
 @app.route("/covidform",methods = ['POST'])
 def getCovidForm():
     requestData = request.get_json()
+    print(requestData)
     name = requestData["username"]
     temperature = float(requestData["args"])
     if temperature < 38.00:
