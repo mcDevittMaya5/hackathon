@@ -15,7 +15,7 @@ pdfIp = "simpleForm.pdf"
 
 @app.route('/covidrequirements',methods = ['POST'])
 def getCovidRequirements():
-    return{
+    return {
         "response": 'In order to get the covid Form the following requirements must be met. The Employee must not have a cough, high temperature, sore throat, runny nose, breathlessness or flu like symptoms in the last 14 days. The employee can not be diagnosed with, or suspected to have Covid-19 in the last 14 days. The Employee should not have been a close contact within the last 14 days. The employee should not have been told by a doctorto self-isolate or cacoon. The Employee should not be waiting for a Covid-19 test. If all these conditions have been met please complete the /covidform command followed by teamperature measurement completed today in degrese celsius.'
     }
 
@@ -27,7 +27,7 @@ def getCovidForm():
     if temperature < 38.00:
         pdfOp = 'pdf/{employeeName}-{date}.pdf'.format(employeeName= name, date = datetime.date.today())
         fillInFileData(name,temperature,pdfIp,pdfOp) #change location to right way in this function
-        return{
+        return {
           #from the server
        }
     else:
