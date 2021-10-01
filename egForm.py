@@ -43,6 +43,8 @@ def create_simple_form():
                    x=350, y=320, borderStyle='inset',
                    forceBorder=True)
     
+    
+    c.drawString(100,250, 'Signature: ____________________________')
     c.save()
     
 if __name__ == '__main__':
