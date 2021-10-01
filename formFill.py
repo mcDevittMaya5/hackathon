@@ -29,7 +29,7 @@ def getCovidForm():
         pdfOp = 'pdf/{employeeName}-{date}.pdf'.format(employeeName= name.replace(" ",""), date = datetime.date.today())
         fillInFileData(name,temperature,pdfIp,pdfOp)
         return {
-          "response": "http://localhost:5000/"+pdfOp
+          "response": "http://54.78.76.53:5000/"+pdfOp
        }
     else:
         return {
