@@ -10,7 +10,7 @@ SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 
 
-app = Flask(__name__,static_url_path='')
+app = Flask(__name__)
 pdfIp = "simpleForm.pdf"
 
 @app.route('/covidrequirements',methods = ['POST'])
